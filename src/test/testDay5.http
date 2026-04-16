@@ -1,5 +1,43 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### CREATE MODEL
+POST http://localhost:8080/api/models
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjcwNTM5LCJleHAiOjE3NzU3NTY5Mzl9.7lOiCBCGf06Zv9-OW0p_rugrTA9q1cUMfTRptVtUitc
+
+{
+  "name": "Ruch po okręgu",
+  "description": "Model parametryczny 2D",
+  "xExpression": "cos(t)",
+  "yExpression": "sin(t)"
+}
 
 ###
+
+### GET ALL MODELS
+GET http://localhost:8080/api/models
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjcwNTM5LCJleHAiOjE3NzU3NTY5Mzl9.7lOiCBCGf06Zv9-OW0p_rugrTA9q1cUMfTRptVtUitc
+
+###
+
+### GET MODEL BY ID
+GET http://localhost:8080/api/models/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjcwNTM5LCJleHAiOjE3NzU3NTY5Mzl9.7lOiCBCGf06Zv9-OW0p_rugrTA9q1cUMfTRptVtUitc
+
+###
+
+### UPDATE MODEL
+PUT http://localhost:8080/api/models/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjcwNTM5LCJleHAiOjE3NzU3NTY5Mzl9.7lOiCBCGf06Zv9-OW0p_rugrTA9q1cUMfTRptVtUitc
+
+{
+  "name": "Spirala",
+  "description": "Model parametryczny po aktualizacji",
+  "xExpression": "t*cos(t)",
+  "yExpression": "t*sin(t)"
+}
+
+###
+
+### DELETE MODEL
+DELETE http://localhost:8080/api/models/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjcwNTM5LCJleHAiOjE3NzU3NTY5Mzl9.7lOiCBCGf06Zv9-OW0p_rugrTA9q1cUMfTRptVtUitc

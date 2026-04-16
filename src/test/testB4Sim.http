@@ -1,5 +1,307 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### =========================
+### DynaLab - full API tests
+### =========================
+
+@host = http://localhost:8080
+@contentType = application/json
+
+### UZUPEŁNIAJ RĘCZNIE po loginie:
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NzYxNzI0MzEsImV4cCI6MTc3NjI1ODgzMX0.KDwW6beGCfxaybyn01LRjvm1Sqh5j_xkH_PPtWkSEvE
+### UZUPEŁNIAJ RĘCZNIE po utworzeniu zasobów:
+@modelId = 1
+@simulationId = 1
+@initialConditionId = 1
+
+##################################################
+### 1. AUTH
+##################################################
+
+### Register user
+POST {{host}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "testuser1",
+  "email": "testuser1@example.com",
+  "password": "password123"
+}
 
 ###
+
+### Login user
+POST {{host}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "testuser1@example.com",
+  "password": "password123"
+}
+
+###
+
+### Test JWT
+GET {{host}}/api/test
+Authorization: Bearer {{token}}
+
+###
+
+##################################################
+### 2. DYNAMIC MODELS
+##################################################
+
+### Create dynamic model 1
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Oscylator harmoniczny",
+  "description": "Prosty układ: dx/dt = y, dy/dt = -x",
+  "xExpression": "y",
+  "yExpression": "-x"
+}
+
+###
+
+### Create dynamic model 2
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Układ liniowy",
+  "description": "dx/dt = x - y, dy/dt = x + y",
+  "xExpression": "x - y",
+  "yExpression": "x + y"
+}
+
+###
+
+### Get all dynamic models
+GET {{host}}/api/models
+Authorization: Bearer {{token}}
+
+###
+
+### Get dynamic model by id
+GET {{host}}/api/models/{{modelId}}
+Authorization: Bearer {{token}}
+
+###
+
+### Update dynamic model
+PUT {{host}}/api/models/{{modelId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Oscylator harmoniczny - updated",
+  "description": "Zmieniony opis modelu",
+  "xExpression": "y",
+  "yExpression": "-x"
+}
+
+###
+
+### Delete dynamic model
+DELETE {{host}}/api/models/{{modelId}}
+Authorization: Bearer {{token}}
+
+###
+
+##################################################
+### 3. SIMULATIONS
+##################################################
+
+### Create simulation
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Simulation A",
+  "dt": 0.1,
+  "stepsCount": 100,
+  "status": "CREATED",
+  "dynamicModelId": {{modelId}}
+}
+
+###
+
+### Create simulation 2
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Simulation B",
+  "dt": 0.05,
+  "stepsCount": 200,
+  "status": "CREATED",
+  "dynamicModelId": {{modelId}}
+}
+
+### Create simulation 2
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Simulation C",
+  "dt": 0.05,
+  "stepsCount": 400,
+  "status": "CREATED",
+  "dynamicModelId": 2
+}
+
+###
+
+### Get all simulations
+GET {{host}}/api/simulations
+Authorization: Bearer {{token}}
+
+###
+
+### Get my simulations
+GET {{host}}/api/simulations/my
+Authorization: Bearer {{token}}
+
+###
+
+### Get simulation by id
+GET {{host}}/api/simulations/{{simulationId}}
+Authorization: Bearer {{token}}
+
+###
+
+### Update simulation
+PUT {{host}}/api/simulations/{{simulationId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Simulation A updated",
+  "dt": 0.2,
+  "stepsCount": 150,
+  "status": "UPDATED",
+  "dynamicModelId": {{modelId}}
+}
+###update
+PUT {{host}}/api/simulations/3
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Simulation A updated",
+  "dt": 0.005,
+  "stepsCount": 20000,
+  "status": "UPDATED",
+  "dynamicModelId": 2
+}
+
+###
+
+### Delete simulation
+DELETE {{host}}/api/simulations/{{simulationId}}
+Authorization: Bearer {{token}}
+
+###
+
+##################################################
+### 4. INITIAL CONDITIONS
+##################################################
+
+### Create initial condition 1 for simulation
+POST {{host}}/api/simulations/{{simulationId}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.0,
+  "y0": 0.0
+}
+
+###
+
+### Create initial condition 2 for simulation
+POST {{host}}/api/simulations/{{simulationId}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": 1.0
+}
+
+### Create initial condition 1 for simulation
+POST {{host}}/api/simulations/3/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -0.5,
+  "y0": 0.0
+}
+
+###
+
+### Create initial condition 2 for simulation
+POST {{host}}/api/simulations/3/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": -0.5
+}
+
+###
+
+### Get all initial conditions for simulation
+GET {{host}}/api/simulations/{{simulationId}}/initial-conditions
+Authorization: Bearer {{token}}
+
+###
+
+### Get initial condition by id
+GET {{host}}/api/simulations/{{simulationId}}/initial-conditions/{{initialConditionId}}
+Authorization: Bearer {{token}}
+
+###
+
+### Update initial condition
+PUT {{host}}/api/simulations/{{simulationId}}/initial-conditions/{{initialConditionId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 3.5,
+  "y0": -1.2
+}
+
+###
+
+### Delete initial condition
+DELETE {{host}}/api/simulations/{{simulationId}}/initial-conditions/{{initialConditionId}}
+Authorization: Bearer {{token}}
+
+###
+
+##################################################
+### 6. RUN SIMULATION
+##################################################
+
+### Run simulation
+POST {{host}}/api/simulations/11/run
+Authorization: Bearer {{token}}
+
+###
+
+### Get simulation results
+GET {{host}}/api/simulations/{{simulationId}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:8080/api/simulations/1/run
+Authorization: Bearer {{token}}

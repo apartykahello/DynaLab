@@ -1,5 +1,1362 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### =========================
+### DynaLab - 11 modeli + symulacje + 8 IC + run
+### =========================
+
+@host = http://localhost:8080
+@contentType = application/json
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NzYzMTg0NjIsImV4cCI6MTc3NjQwNDg2Mn0.JJaafPLpJGDT7TT4g8kfNQ_oiUzkVaS_Mzo193jIc-M
+
+##################################################
+### 1. LOTKA-VOLTERRA
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Lotka-Volterra",
+  "description": "Drapieznik-ofiara. dx/dt = 1.5*x - 1.0*x*y, dy/dt = -1.0*y + 0.75*x*y",
+  "xExpression": "1.5*x - 1.0*x*y",
+  "yExpression": "-1.0*y + 0.75*x*y"
+}
+
+> {% client.global.set("model_lv", response.body.id); %}
 
 ###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Lotka-Volterra demo",
+  "dt": 0.01,
+  "stepsCount": 5000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_lv}}
+}
+
+> {% client.global.set("sim_lv", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.6,
+  "y0": 0.4
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.0,
+  "y0": 0.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.2,
+  "y0": 2.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 3.2,
+  "y0": 1.3
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.3,
+  "y0": 1.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 4.0,
+  "y0": 0.6
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.7,
+  "y0": 2.7
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lv}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.9,
+  "y0": 3.4
+}
+
+##################################################
+### 2. VAN DER POL
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Van der Pol",
+  "description": "Nieliniowy oscylator z cyklem granicznym. dx/dt = y, dy/dt = 2.0*(1 - x*x)*y - x",
+  "xExpression": "y",
+  "yExpression": "2.0*(1 - x*x)*y - x"
+}
+
+> {% client.global.set("model_vdp", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Van der Pol demo",
+  "dt": 0.01,
+  "stepsCount": 8000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_vdp}}
+}
+
+> {% client.global.set("sim_vdp", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.2,
+  "y0": 0.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.0,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -3.0,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.5,
+  "y0": -4.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.0,
+  "y0": -1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 3.5,
+  "y0": 2.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.0,
+  "y0": 3.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_vdp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 4.0,
+  "y0": -1.5
+}
+
+##################################################
+### 3. DUFFING
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Duffing",
+  "description": "Oscylator Duffinga. dx/dt = y, dy/dt = x - x*x*x - 0.2*y",
+  "xExpression": "y",
+  "yExpression": "x - x*x*x - 0.2*y"
+}
+
+> {% client.global.set("model_duf", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Duffing demo",
+  "dt": 0.01,
+  "stepsCount": 7000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_duf}}
+}
+
+> {% client.global.set("sim_duf", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.1,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.8,
+  "y0": 0.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.8,
+  "y0": -0.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": 2.4
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.8,
+  "y0": 0.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -0.8,
+  "y0": -0.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.2,
+  "y0": -1.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_duf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.2,
+  "y0": 1.5
+}
+
+##################################################
+### 4. DAMPED PENDULUM
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Damped Pendulum",
+  "description": "Wahadlo tlumione. dx/dt = y, dy/dt = -sin(x) - 0.2*y",
+  "xExpression": "y",
+  "yExpression": "-sin(x) - 0.2*y"
+}
+
+> {% client.global.set("model_pen", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Damped Pendulum demo",
+  "dt": 0.01,
+  "stepsCount": 8000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_pen}}
+}
+
+> {% client.global.set("sim_pen", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.2,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.5,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 3.0,
+  "y0": 1.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.8,
+  "y0": -2.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.2,
+  "y0": 0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.2,
+  "y0": -0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 4.0,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_pen}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": 3.0
+}
+
+##################################################
+### 5. FITZHUGH-NAGUMO
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "FitzHugh-Nagumo",
+  "description": "Model pobudliwy. dx/dt = x - x*x*x/3 - y + 0.5, dy/dt = 0.08*(x + 0.7 - 0.8*y)",
+  "xExpression": "x - x*x*x/3 - y + 0.5",
+  "yExpression": "0.08*(x + 0.7 - 0.8*y)"
+}
+
+> {% client.global.set("model_fhn", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "FitzHugh-Nagumo demo",
+  "dt": 0.02,
+  "stepsCount": 6000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_fhn}}
+}
+
+> {% client.global.set("sim_fhn", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.0,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.5,
+  "y0": -0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.2,
+  "y0": 1.4
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.0,
+  "y0": 0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.8,
+  "y0": 2.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.8,
+  "y0": -1.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_fhn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.5,
+  "y0": -1.0
+}
+
+##################################################
+### 6. BRUSSELATOR
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Brusselator",
+  "description": "Model chemiczny. dx/dt = 1.0 - 3.2*x + x*x*y, dy/dt = 2.2*x - x*x*y",
+  "xExpression": "1.0 - 3.2*x + x*x*y",
+  "yExpression": "2.2*x - x*x*y"
+}
+
+> {% client.global.set("model_bru", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Brusselator demo",
+  "dt": 0.01,
+  "stepsCount": 7000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_bru}}
+}
+
+> {% client.global.set("sim_bru", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.2,
+  "y0": 0.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.0,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.5,
+  "y0": 0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.8,
+  "y0": 3.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.8,
+  "y0": 2.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 3.0,
+  "y0": 1.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.4,
+  "y0": 4.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_bru}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.2,
+  "y0": 0.2
+}
+
+##################################################
+### 7. HOPF NORMAL FORM
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Hopf Normal Form",
+  "description": "Postac normalna bifurkacji Hopfa. dx/dt = 0.7*x - y - x*(x*x + y*y), dy/dt = x + 0.7*y - y*(x*x + y*y)",
+  "xExpression": "0.7*x - y - x*(x*x + y*y)",
+  "yExpression": "x + 0.7*y - y*(x*x + y*y)"
+}
+
+> {% client.global.set("model_hopf", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Hopf demo",
+  "dt": 0.01,
+  "stepsCount": 7000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_hopf}}
+}
+
+> {% client.global.set("sim_hopf", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.1,
+  "y0": 0.1
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.0,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.5,
+  "y0": 1.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": -2.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.6,
+  "y0": 2.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.2,
+  "y0": 0.6
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.8,
+  "y0": -1.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_hopf}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -0.7,
+  "y0": -2.8
+}
+
+##################################################
+### 8. OSCYLATOR HARMONICZNY
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Oscylator Harmoniczny",
+  "description": "Oscylator harmoniczny. dx/dt = y, dy/dt = -x",
+  "xExpression": "y",
+  "yExpression": "-x"
+}
+
+> {% client.global.set("model_sn", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Oscylator harmoniczny demo",
+  "dt": 0.005,
+  "stepsCount": 5000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_sn}}
+}
+
+> {% client.global.set("sim_sn", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.4,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -0.6,
+  "y0": -1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.2,
+  "y0": 0.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.2,
+  "y0": -0.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.0,
+  "y0": 2.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.0,
+  "y0": -2.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": 2.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_sn}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.5,
+  "y0": 0.0
+}
+
+##################################################
+### 9. COMPETING SPECIES
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Competing Species",
+  "description": "Dwie konkurujace populacje. dx/dt = x*(1 - x - 1.5*y), dy/dt = y*(1 - y - 0.8*x)",
+  "xExpression": "x*(1 - x - 1.5*y)",
+  "yExpression": "y*(1 - y - 0.8*x)"
+}
+
+> {% client.global.set("model_comp", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Competing Species demo",
+  "dt": 0.01,
+  "stepsCount": 5000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_comp}}
+}
+
+> {% client.global.set("sim_comp", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.1,
+  "y0": 0.1
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.9,
+  "y0": 0.2
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.2,
+  "y0": 0.9
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.4,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.5,
+  "y0": 0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.8,
+  "y0": 0.3
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.3,
+  "y0": 1.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_comp}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.1,
+  "y0": 1.6
+}
+
+##################################################
+### 10. DOUBLE-WELL GRADIENT SYSTEM
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Double-Well Gradient System",
+  "description": "Uklad z dwoma atraktorami. dx/dt = x - x*x*x, dy/dt = -y",
+  "xExpression": "x - x*x*x",
+  "yExpression": "-y"
+}
+
+> {% client.global.set("model_dw", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Double-Well demo",
+  "dt": 0.01,
+  "stepsCount": 5000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_dw}}
+}
+
+> {% client.global.set("sim_dw", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -0.2,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.2,
+  "y0": -1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.8,
+  "y0": 0.3
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.8,
+  "y0": -0.3
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -0.7,
+  "y0": 1.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.7,
+  "y0": -1.8
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.5,
+  "y0": -0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_dw}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.5,
+  "y0": 0.5
+}
+
+##################################################
+### 11. UKLAD LINIOWY x-y / x+y
+##################################################
+
+POST {{host}}/api/models
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Układ liniowy x-y / x+y",
+  "description": "Układ liniowy. dx/dt = x - y, dy/dt = x + y",
+  "xExpression": "x - y",
+  "yExpression": "x + y"
+}
+
+> {% client.global.set("model_lin", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "name": "Układ liniowy demo",
+  "dt": 0.01,
+  "stepsCount": 5000,
+  "status": "CREATED",
+  "dynamicModelId": {{model_lin}}
+}
+
+> {% client.global.set("sim_lin", response.body.id); %}
+
+###
+
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.5,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.0,
+  "y0": 1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.0,
+  "y0": 0.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.0,
+  "y0": -1.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -2.0,
+  "y0": -2.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 0.0,
+  "y0": 2.5
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.5,
+  "y0": 0.0
+}
+
+###
+POST {{host}}/api/simulations/{{sim_lin}}/initial-conditions
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "x0": -1.5,
+  "y0": 2.0
+}
+
+##################################################
+### RUN ALL
+##################################################
+
+POST {{host}}/api/simulations/{{sim_lv}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_lv}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_vdp}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_vdp}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_duf}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_duf}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_pen}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_pen}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_fhn}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_fhn}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_bru}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_bru}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_hopf}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_hopf}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_sn}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_sn}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_comp}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_comp}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_dw}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_dw}}/results
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/simulations/{{sim_lin}}/run
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/simulations/{{sim_lin}}/results
+Authorization: Bearer {{token}}

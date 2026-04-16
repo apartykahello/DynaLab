@@ -1,5 +1,90 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+// START GENAI
+### ENV / VARIABLES
+@host = localhost:8080
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1ODMxNTA0LCJleHAiOjE3NzU5MTc5MDR9.LjFCQs9fjJXF5C86zXbjjk9jImtSCfvs25suZIpwMVo
 
 ###
+
+### CREATE MODEL
+POST http://{{host}}/api/models
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Ruch po okręgu",
+  "description": "Model parametryczny 2D",
+  "xExpression": "cos(t)",
+  "yExpression": "sin(t)"
+}
+
+###
+
+### CREATE SIMULATION
+POST http://{{host}}/api/simulations
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Symulacja bez warunków początkowych",
+  "startTime": 0.0,
+  "endTime": 10.0,
+  "stepSize": 0.1,
+  "status": "CREATED",
+  "dynamicModelId": 1
+}
+
+###
+
+### ADD INITIAL CONDITION TO SIMULATION
+POST http://{{host}}/api/simulations/2/initial-condition
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "x0": 1.0,
+  "y0": 0.0
+}
+
+###
+
+### GET INITIAL CONDITION FOR SIMULATION
+GET http://{{host}}/api/simulations/2/initial-condition
+Authorization: Bearer {{token}}
+
+###
+
+### UPDATE INITIAL CONDITION FOR SIMULATION
+PUT http://{{host}}/api/simulations/2/initial-condition
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "x0": 2.0,
+  "y0": 1.0
+}
+
+###
+
+### GET SIMULATION BY ID
+GET http://{{host}}/api/simulations/2
+Authorization: Bearer {{token}}
+
+###
+
+### DELETE INITIAL CONDITION FOR SIMULATION
+DELETE http://{{host}}/api/simulations/2/initial-condition
+Authorization: Bearer {{token}}
+
+###
+
+### GET ALL SIMULATIONS
+GET http://{{host}}/api/simulations
+Authorization: Bearer {{token}}
+
+###
+
+### GET MY SIMULATIONS
+GET http://{{host}}/api/simulations/my
+Authorization: Bearer {{token}}
+
+// END GENAI

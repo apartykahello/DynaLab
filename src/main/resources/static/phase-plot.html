@@ -1,10 +1,415 @@
+<!-- START GENAI -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phase Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .panel, .chart-box {
+            background: #fff;
+            padding: 16px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        label {
+            width: 110px;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        input[type="number"] {
+            width: 180px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #status, #summary {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .chart-wrapper {
+            width: min(85vw, 800px);
+            height: min(85vw, 800px);
+            margin: 0 auto;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-$END$
+<h1>Phase Plot</h1>
+
+<div class="panel">
+    <div class="row">
+        <label for="apiBase">API Base</label>
+        <input type="text" id="apiBase" value="http://localhost:8080">
+    </div>
+
+    <div class="row">
+        <label for="simulationId">Simulation ID</label>
+        <input type="number" id="simulationId" placeholder="np. 1">
+    </div>
+
+    <div class="row">
+        <label for="token">Token</label>
+        <input type="text" id="token" placeholder="Wklej JWT token">
+    </div>
+
+    <div class="row">
+        <button id="runBtn">Run simulation</button>
+        <button id="loadBtn">Load results</button>
+        <button id="clearBtn" type="button">Clear chart</button>
+    </div>
+
+    <div id="status">Gotowe.</div>
+    <div id="summary"></div>
+</div>
+
+<div class="chart-box">
+    <div class="chart-wrapper">
+        <canvas id="phaseChart"></canvas>
+    </div>
+</div>
+
+<script>
+    let phaseChart = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        restoreFormValues();
+        document.getElementById("runBtn").addEventListener("click", runSimulation);
+        document.getElementById("loadBtn").addEventListener("click", loadResults);
+        document.getElementById("clearBtn").addEventListener("click", clearChart);
+    });
+
+    function restoreFormValues() {
+        document.getElementById("apiBase").value =
+            localStorage.getItem("phasePlot.apiBase") || "http://localhost:8080";
+        document.getElementById("simulationId").value =
+            localStorage.getItem("phasePlot.simulationId") || "";
+        document.getElementById("token").value =
+            localStorage.getItem("phasePlot.token") || "";
+    }
+
+    function persistFormValues() {
+        localStorage.setItem("phasePlot.apiBase", getApiBase());
+        localStorage.setItem("phasePlot.simulationId", getSimulationId());
+        localStorage.setItem("phasePlot.token", getToken());
+    }
+
+    function getApiBase() {
+        const value = document.getElementById("apiBase").value.trim();
+        return value.endsWith("/") ? value.slice(0, -1) : value;
+    }
+
+    function getSimulationId() {
+        return document.getElementById("simulationId").value.trim();
+    }
+
+    function getToken() {
+        return document.getElementById("token").value.trim();
+    }
+
+    function setStatus(message) {
+        document.getElementById("status").textContent = message;
+    }
+
+    function setSummary(message) {
+        document.getElementById("summary").textContent = message;
+    }
+
+    async function runSimulation() {
+        const apiBase = getApiBase();
+        const simulationId = getSimulationId();
+        const token = getToken();
+
+        if (!apiBase || !simulationId || !token) {
+            setStatus("Uzupełnij API Base, Simulation ID i token.");
+            return;
+        }
+
+        persistFormValues();
+        setStatus("Uruchamianie symulacji...");
+
+        try {
+            const response = await fetch(`${apiBase}/api/simulations/${simulationId}/run`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || `HTTP ${response.status}`);
+            }
+
+            setStatus("Symulacja zakończona. Ładowanie wyników...");
+            await loadResults();
+        } catch (error) {
+            console.error(error);
+            setStatus("Błąd run: " + error.message);
+        }
+    }
+
+    async function loadResults() {
+        const apiBase = getApiBase();
+        const simulationId = getSimulationId();
+        const token = getToken();
+
+        if (!apiBase || !simulationId || !token) {
+            setStatus("Uzupełnij API Base, Simulation ID i token.");
+            return;
+        }
+
+        persistFormValues();
+        setStatus("Pobieranie wyników...");
+
+        try {
+            const response = await fetch(`${apiBase}/api/simulations/${simulationId}/results`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || `HTTP ${response.status}`);
+            }
+
+            const groupedResults = await response.json();
+            drawPhasePlot(groupedResults);
+            updateSummary(groupedResults);
+            setStatus("Wyniki pobrane i wykres narysowany.");
+        } catch (error) {
+            console.error(error);
+            setStatus("Błąd load: " + error.message);
+        }
+    }
+
+    function computeSharedAxisBounds(groupedResults) {
+        let foundAnyPoint = false;
+        let minValue = Infinity;
+        let maxValue = -Infinity;
+
+        for (const group of groupedResults || []) {
+            const results = group.results || [];
+            for (const point of results) {
+                const x = Number(point.xValue);
+                const y = Number(point.yValue);
+
+                if (Number.isFinite(x)) {
+                    if (x < minValue) minValue = x;
+                    if (x > maxValue) maxValue = x;
+                    foundAnyPoint = true;
+                }
+
+                if (Number.isFinite(y)) {
+                    if (y < minValue) minValue = y;
+                    if (y > maxValue) maxValue = y;
+                    foundAnyPoint = true;
+                }
+            }
+        }
+
+        if (!foundAnyPoint) {
+            return null;
+        }
+
+        const span = maxValue - minValue;
+        const padding = span === 0 ? 1 : span * 0.05;
+
+        return {
+            min: minValue - padding,
+            max: maxValue + padding
+        };
+    }
+
+    function buildDatasets(groupedResults) {
+        return (groupedResults || []).map((group, index) => ({
+            label: `IC ${group.initialConditionId} (${formatNumber(group.x0)}, ${formatNumber(group.y0)})`,
+            data: (group.results || []).map(point => ({
+                x: Number(point.xValue),
+                y: Number(point.yValue)
+            })).filter(point => Number.isFinite(point.x) && Number.isFinite(point.y)),
+            borderColor: getColor(index),
+            backgroundColor: getColor(index),
+            showLine: true,
+            pointRadius: 1,
+            pointHoverRadius: 4,
+            borderWidth: 2,
+            tension: 0
+        }));
+    }
+
+    function drawPhasePlot(groupedResults) {
+        const ctx = document.getElementById("phaseChart").getContext("2d");
+        const bounds = computeSharedAxisBounds(groupedResults);
+        const datasets = buildDatasets(groupedResults);
+
+        if (!bounds || datasets.length === 0) {
+            clearChartOnly();
+            setSummary("Brak punktów do narysowania.");
+            return;
+        }
+
+        if (phaseChart) {
+            phaseChart.destroy();
+        }
+
+        phaseChart = new Chart(ctx, {
+            type: "scatter",
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top"
+                    },
+                    title: {
+                        display: true,
+                        text: "Phase Plot (x vs y)"
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: x=${formatNumber(context.raw.x)}, y=${formatNumber(context.raw.y)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: "linear",
+                        min: bounds.min,
+                        max: bounds.max,
+                        title: {
+                            display: true,
+                            text: "x"
+                        }
+                    },
+                    y: {
+                        min: bounds.min,
+                        max: bounds.max,
+                        title: {
+                            display: true,
+                            text: "y"
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function clearChartOnly() {
+        if (phaseChart) {
+            phaseChart.destroy();
+            phaseChart = null;
+        }
+    }
+
+    function clearChart() {
+        clearChartOnly();
+        setStatus("Wykres wyczyszczony.");
+        setSummary("");
+    }
+
+    function updateSummary(groupedResults) {
+        let trajectories = 0;
+        let points = 0;
+
+        for (const group of groupedResults || []) {
+            trajectories++;
+            points += (group.results || []).length;
+        }
+
+        setSummary(`Trajektorie: ${trajectories} | Punktów: ${points}`);
+    }
+
+    function formatNumber(value) {
+        if (value === null || value === undefined || Number.isNaN(value)) {
+            return "";
+        }
+        return Number(value).toFixed(4).replace(/\.?0+$/, "");
+    }
+
+    function getColor(index) {
+        const colors = [
+            "#e63946",
+            "#1d3557",
+            "#2a9d8f",
+            "#f4a261",
+            "#6a4c93",
+            "#ff006e",
+            "#118ab2",
+            "#06d6a0",
+            "#8338ec",
+            "#fb5607",
+            "#3a86ff",
+            "#ffbe0b"
+        ];
+        return colors[index % colors.length];
+    }
+</script>
 </body>
 </html>
+
+<!-- END GENAI -->

@@ -1,4 +1,4 @@
-package com.visa.dynalab.dto;
+package com.visa.dynalab.dto.DynamicModel;
 
 import java.time.LocalDateTime;
 
@@ -7,8 +7,8 @@ public class DynamicModelDto {
     private Long id;
     private String name;
     private String description;
-    private String modelType;
-    private String equationDescription;
+    private String xExpression;
+    private String yExpression;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -18,15 +18,15 @@ public class DynamicModelDto {
     public DynamicModelDto(Long id,
                            String name,
                            String description,
-                           String modelType,
-                           String equationDescription,
+                           String xExpression,
+                           String yExpression,
                            LocalDateTime createdAt,
                            LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.modelType = modelType;
-        this.equationDescription = equationDescription;
+        this.xExpression = xExpression;
+        this.yExpression = yExpression;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -43,12 +43,12 @@ public class DynamicModelDto {
         return description;
     }
 
-    public String getModelType() {
-        return modelType;
+    public String getXExpression() {
+        return xExpression;
     }
 
-    public String getEquationDescription() {
-        return equationDescription;
+    public String getYExpression() {
+        return yExpression;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -71,12 +71,12 @@ public class DynamicModelDto {
         this.description = description;
     }
 
-    public void setModelType(String modelType) {
-        this.modelType = modelType;
+    public void setXExpression(String xExpression) {
+        this.xExpression = xExpression;
     }
 
-    public void setEquationDescription(String equationDescription) {
-        this.equationDescription = equationDescription;
+    public void setYExpression(String yExpression) {
+        this.yExpression = yExpression;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

@@ -1,11 +1,11 @@
-package com.visa.dynalab.dto;
+package com.visa.dynalab.dto.DynamicModel;
 
 public class CreateDynamicModelDto {
 
     private String name;
     private String description;
-    private String modelType;
-    private String equationDescription;
+    private String xExpression;
+    private String yExpression;
 
     public CreateDynamicModelDto() {
     }
@@ -18,12 +18,12 @@ public class CreateDynamicModelDto {
         return description;
     }
 
-    public String getModelType() {
-        return modelType;
+    public String getXExpression() {
+        return xExpression;
     }
 
-    public String getEquationDescription() {
-        return equationDescription;
+    public String getYExpression() {
+        return yExpression;
     }
 
     public void setName(String name) {
@@ -34,11 +34,11 @@ public class CreateDynamicModelDto {
         this.description = description;
     }
 
-    public void setModelType(String modelType) {
-        this.modelType = modelType;
+    public void setXExpression(String xExpression) {
+        this.xExpression = xExpression;
     }
 
-    public void setEquationDescription(String equationDescription) {
-        this.equationDescription = equationDescription;
+    public void setYExpression(String yExpression) {
+        this.yExpression = yExpression;
     }
 }

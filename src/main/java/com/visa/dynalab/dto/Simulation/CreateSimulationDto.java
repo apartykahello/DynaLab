@@ -3,12 +3,10 @@ package com.visa.dynalab.dto.Simulation;
 public class CreateSimulationDto {
 
     private String name;
-    private Double startTime;
-    private Double endTime;
-    private Double stepSize;
+    private Double dt;
+    private Integer stepsCount;
     private String status;
     private Long dynamicModelId;
-    private InitialConditionDto initialCondition;
 
     public CreateSimulationDto() {
     }
@@ -17,16 +15,12 @@ public class CreateSimulationDto {
         return name;
     }
 
-    public Double getStartTime() {
-        return startTime;
+    public Double getDt() {
+        return dt;
     }
 
-    public Double getEndTime() {
-        return endTime;
-    }
-
-    public Double getStepSize() {
-        return stepSize;
+    public Integer getStepsCount() {
+        return stepsCount;
     }
 
     public String getStatus() {
@@ -37,24 +31,16 @@ public class CreateSimulationDto {
         return dynamicModelId;
     }
 
-    public InitialConditionDto getInitialCondition() {
-        return initialCondition;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setStartTime(Double startTime) {
-        this.startTime = startTime;
+    public void setDt(Double dt) {
+        this.dt = dt;
     }
 
-    public void setEndTime(Double endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setStepSize(Double stepSize) {
-        this.stepSize = stepSize;
+    public void setStepsCount(Integer stepsCount) {
+        this.stepsCount = stepsCount;
     }
 
     public void setStatus(String status) {
@@ -63,9 +49,5 @@ public class CreateSimulationDto {
 
     public void setDynamicModelId(Long dynamicModelId) {
         this.dynamicModelId = dynamicModelId;
-    }
-
-    public void setInitialCondition(InitialConditionDto initialCondition) {
-        this.initialCondition = initialCondition;
     }
 }

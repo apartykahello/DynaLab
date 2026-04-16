@@ -1,4 +1,4 @@
-package com.visa.dynalab.dto;
+package com.visa.dynalab.dto.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

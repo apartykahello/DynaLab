@@ -1,5 +1,57 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### ADD PARAMETER TO MODEL 1
+POST http://localhost:8080/api/models/1/parameters
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjY2MTA3LCJleHAiOjE3NzU3NTI1MDd9.GgSmnLrqgCJxTc8FCa7ycxQUgYiR17kYrwEOsnhN8gY
+
+{
+  "name": "mass",
+  "value": 10.5,
+  "description": "Mass of the object",
+  "unit": "kg"
+}
 
 ###
+
+### GET PARAMETERS FOR MODEL 1
+GET http://localhost:8080/api/models/1/parameters
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjY2MTA3LCJleHAiOjE3NzU3NTI1MDd9.GgSmnLrqgCJxTc8FCa7ycxQUgYiR17kYrwEOsnhN8gY
+
+###
+
+### GET PARAMETER BY ID
+GET http://localhost:8080/api/parameters/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjY2MTA3LCJleHAiOjE3NzU3NTI1MDd9.GgSmnLrqgCJxTc8FCa7ycxQUgYiR17kYrwEOsnhN8gY
+
+###
+
+### UPDATE PARAMETER
+PUT http://localhost:8080/api/parameters/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjY2MTA3LCJleHAiOjE3NzU3NTI1MDd9.GgSmnLrqgCJxTc8FCa7ycxQUgYiR17kYrwEOsnhN8gY
+
+{
+  "name": "mass",
+  "value": 12.0,
+  "description": "Updated mass",
+  "unit": "kg"
+}
+
+###
+
+### DELETE PARAMETER
+DELETE http://localhost:8080/api/parameters/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjY2MTA3LCJleHAiOjE3NzU3NTI1MDd9.GgSmnLrqgCJxTc8FCa7ycxQUgYiR17kYrwEOsnhN8gY
+
+###
+
+### VALIDATION TEST
+POST http://localhost:8080/api/models/1/parameters
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjY2MTA3LCJleHAiOjE3NzU3NTI1MDd9.GgSmnLrqgCJxTc8FCa7ycxQUgYiR17kYrwEOsnhN8gY
+
+{
+  "name": "",
+  "value": null,
+  "description": "Invalid parameter",
+  "unit": "kg"
+}

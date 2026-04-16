@@ -1,5 +1,31 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### REGISTER
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "username": "adam",
+  "email": "adam@test.com",
+  "password": "123456"
+}
 
 ###
+
+### LOGIN
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "adam@test.com",
+  "password": "123456"
+}
+
+###
+
+### TEST WITHOUT TOKEN
+GET http://localhost:8080/api/test
+
+###
+
+### TEST WITH TOKEN
+GET http://localhost:8080/api/test
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZGFtQHRlc3QuY29tIiwiaWF0IjoxNzc1NjcwNTM5LCJleHAiOjE3NzU3NTY5Mzl9.7lOiCBCGf06Zv9-OW0p_rugrTA9q1cUMfTRptVtUitc
